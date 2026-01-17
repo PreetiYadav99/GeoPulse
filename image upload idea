@@ -1,0 +1,117 @@
+
+Starting (1/8) Inspect frontend upload UI
+
+Good — niche clear plan + concrete next steps so you can start uploading soil data and get useful recommendations.
+
+Short progress update
+
+I inspected the frontend upload pages and auth code earlier (Upload, UploadManual, UploadForm) and switched frontend API calls to use REACT_APP_API_URL so they hit your login backend on port 5001 (avoids the network error).
+Next I'll outline exactly what you need to collect, the API contract, validation, storage, model integration, UX, and tests so you can achieve the objective (upload → predict → recommendation).
+What to collect (data fields you should accept for each upload)
+
+Image upload (preferred): one clear photo of soil sample
+File types: JPG / PNG
+Recommended resolution: 1024×1024 or at least 640px shortest side
+Max size: 5–10 MB (enforce server-side)
+Metadata (optional but very helpful): gps_lat, gps_lon, timestamp, depth_cm, sample_id
+Manual sensor / lab values (form fields)
+pH, moisture(%), temperature(°C), N (mg/kg), P (mg/kg), K (mg/kg), EC (dS/m), organic_carbon(%), texture (loamy/sandy/clayey)
+Batch uploads
+CSV with columns: sample_id, path_or_filename, pH, moisture, N, P, K, EC, OC, texture, lat, lon, timestamp
+User/auth info
+Identify user by session cookie or Bearer token (JWT) so uploads map to user account
+API contract (recommended)
+
+POST /api/upload/image
+Content-Type: multipart/form-data
+Fields:
+file: image
+sample_id (optional)
+pH, moisture, nitrogen, phosphorus, potassium, ec, organic_carbon, texture (optional)
+gps_lat, gps_lon, timestamp (optional)
+Auth: Cookie session (Flask) or Authorization: Bearer <token>
+Response:
+202 Accepted { job_id: "<uuid>", status: "queued", message: "Uploaded, processing" }
+400 { error: "file required" }
+POST /api/upload/manual
+Content-Type: application/json
+Body: { sample_id?, pH, moisture, nitrogen, phosphorus, potassium, ec, organic_carbon, texture, gps_lat?, gps_lon? }
+Response: 200 { result: { label, score, recommendations } } or 202 with job_id if async
+POST /api/upload/batch
+Content-Type: multipart/form-data with CSV file
+Response: 202 { job_id }
+GET /api/results/:job_id
+Returns status/result: { job_id, status: queued|running|done|failed, result?: {...}, errors?: [...] }
+GET /api/user/uploads (paginated)
+Returns user's upload metadata + result links
+Storage & DB
+
+Store uploaded files under project root media/uploads/YYYY-MM-DD/<uuid>_original.jpg
+Store a DB table Upload (or Django model) with columns:
+id (uuid), user, filename, path, metadata (json), status, job_id, created_at, processed_at, result (json)
+Generate a small thumbnail (200px) for quick previews.
+Processing flow & model integration
+
+Two options:
+Synchronous simple path (small files): upload → process immediately → return result (good for single manual predictions).
+Asynchronous robust path (recommended): upload → enqueue job → return job_id → worker processes model → write result → client polls GET /api/results/:job_id or use websocket.
+Model preprocessing (you must confirm your CNN input):
+Typical image steps: resize to model input (e.g., 224×224), convert to RGB, normalize pixels (0-1 or mean/std per channel), possibly center-crop.
+If model expects extra channels or feature vectors, map manual fields into proper format.
+Use your ml_model/model_loader.py wrapper to load the model and implement predict_from_image(image_bytes or PIL.Image) to return:
+{ label: "Alluvial", score: 0.92, features: { ... } }
+Recommendation mapping:
+Map label + numeric features to: recommended crops, fertilizer type/amount, irrigation advice. Store mapping rules in backend/recommendations.py.
+Validation & edge cases to handle
+
+File type/size checks and safe filenames
+Missing required fields → return 400 describing which fields
+Rate limiting / concurrency (throttle big uploads)
+Failed model or worker → mark job failed and return error message
+Auth checks: only owner can fetch job results or delete uploads
+Frontend UX (what to show to the user)
+
+Upload page:
+File chooser + preview
+Form fields for optional metadata, required fields (e.g., pH if doing manual)
+Progress bar during upload (axios with onUploadProgress)
+After upload: show spinner + job_id or immediate result
+Results page:
+Predicted label + confidence
+Top 3 recommended crops and fertilizer/irrigation advice
+Graphs: bar for nutrient values vs recommended ranges
+Link to original image and download
+Errors: clear toast/inline messages for network errors, validation errors, server errors
+If user is logged in and returns (back button), make sure token/cookie still present and retry fetching results gracefully (avoid network error by using env API base URL — already done)
+Testing & sample data
+
+Add unit tests for:
+Upload endpoint: file accepted, file rejected for wrong type, csv parsing
+Predict pipeline: run a smoke test with one sample image and check output shape
+End-to-end flow: upload → poll result → fetch result
+Add one or two sample images in repo samples/ (or give me your sample images) and a sample CSV.
+Security & ops notes
+
+Sanitize filenames, scan for malicious files
+Limit file sizes and image dimensions
+Use HTTPS in production
+If async: use a task queue (Celery + Redis or simple RQ); jobs must be idempotent
+Log errors and keep simple retry logic for transient model errors
+Estimate / next actions I can take now
+
+If you want, I can implement the server endpoints and frontend wiring:
+Small incremental plan:
+Create Upload model and DB migration (Django) + storage folder
+Implement POST /api/upload/image and POST /api/upload/manual (sync first, async later)
+Hook ml_model.predict_from_image (placeholder -> return mocked label if no model)
+Connect frontend UploadImage page and show result page
+Add tests + example image
+Tell me which one to start with:
+A) Implement backend endpoints (I’ll edit views.py, add model and storage)
+B) Implement frontend upload page and connect to existing backend endpoints
+C) Both (I’ll do backend first, then frontend)
+Which do you want me to do next? If you prefer, tell me:
+
+the model file location (if you already have it), and/or
+one sample soil image and a sample CSV to include for testing.
+I’ll start with the chosen item and update the todo list and files as I work.

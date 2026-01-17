@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agriculture AI Assistant - Fullscreen Chatbox</title>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background: #000;
+  }
+  #chat-root {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('/static/images/background5.png') center center no-repeat;
+    background-size: cover;
+    display: none;
+    flex-direction: column;
+    color: white;
+    overflow: hidden;
+    z-index: 10000;
+  }
+  #chat-root.active {
+    display: flex;
+  }
+  #chat-root::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 50, 20, 0.65);
+    backdrop-filter: blur(5px);
+    pointer-events: none;
+  }
+  header {
+    position: relative;
+    padding: 20px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    z-index: 1;
+  }
+  #messages {
+    position: relative;
+    z-index: 1;
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .message {
+    max-width: 75%;
+    padding: 14px 20px;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    color: white;
+    background: rgba(0,0,0,0.4);
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    box-shadow: none;
+    opacity: 0;
+    transform: translateY(20px);
+    animation-fill-mode: forwards;
+    animation-duration: 400ms;
+    animation-timing-function: ease;
+  }
+  .user {
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+    background: rgba(0,0,0,0.6);
+    animation-name: slideInRight;
+  }
+  .bot {
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+    background: rgba(0,0,0,0.35);
+    animation-name: slideInLeft;
+  }
+  @keyframes slideInRight {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideInLeft {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  #input-area {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    padding: 15px 20px;
+    background: transparent;
+  }
+  textarea {
+    flex-grow: 1;
+    padding: 14px 18px;
+    border-radius: 25px;
+    border: 1px solid rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 1rem;
+    resize: none;
+    outline: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+  }
+  textarea::placeholder {
+    color: #ddd;
+  }
+  textarea:focus {
+    border-color: white;
+    background: rgba(255,255,255,0.35);
+  }
+  button {
+    margin-left: 16px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 25px;
+    padding: 0 28px;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:disabled {
+    background: rgba(255,255,255,0.1);
+    cursor: not-allowed;
+  }
+  button:hover:enabled {
+    background: rgba(255,255,255,0.4);
+  }
+  #messages::-webkit-scrollbar {
+    width: 8px;
+  }
+  #messages::-webkit-scrollbar-thumb {
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 4px;
+  }
+  .typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .robot-icon {
+    width: 30px;
+    height: 30px;
+    fill: #2e7d32;
+    animation: bounce 1.5s infinite alternate;
+  }
+  @keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-6px); }
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    background: #2e7d32;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation-name: blink;
+    animation-duration: 1.4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+  .dot:nth-child(1) { animation-delay: 0s; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.4; }
+    40% { opacity: 1; }
+  }
+  #agribot-help-icon {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 9999;
+    cursor: pointer;
+    background: #2e7d32;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px #0005;
+    transition: background 0.2s;
+  }
+</style>
+</head>
+<body>
+  <div id="chat-root" role="main" aria-label="Chat with Agriculture AI Assistant">
+    <header>Agriculture AI Assistant</header>
+    <div id="messages" aria-live="polite" aria-atomic="false"></div>
+    <form id="chat-form" autocomplete="off" aria-label="Type your message">
+      <div id="input-area">
+        <textarea id="user-input" rows="2" placeholder="Type your question..." required></textarea>
+        <button type="submit" id="send-btn" disabled>Send</button>
+      </div>
+    </form>
+  </div>
+  <div id="agribot-help-icon" title="Help">
+    <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#fff"/><path d="M12 17.5a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5Zm0-3.5c-.41 0-.75-.34-.75-.75V12c0-.97.78-1.75 1.75-1.75.41 0 .75-.34.75-.75s-.34-.75-.75-.75a3.25 3.25 0 0 0-3.25 3.25v.25a.75.75 0 0 0 1.5 0V12c0-.97.78-1.75 1.75-1.75.41 0 .75-.34.75-.75s-.34-.75-.75-.75a3.25 3.25 0 0 0-3.25 3.25v.25a.75.75 0 0 0 1.5 0V12z" fill="#2e7d32"/></svg>
+  </div>
+  <script>
+    // Show chatbot UI when icon is clicked
+    const helpIcon = document.getElementById('agribot-help-icon');
+    const chatRoot = document.getElementById('chat-root');
+    helpIcon.onclick = function() {
+      chatRoot.style.display = 'flex';
+      chatRoot.classList.add('active');
+    };
+    // Add close button to chat UI
+    function addCloseBtn() {
+      if (!document.getElementById('chat-close-btn')) {
+        const closeBtn = document.createElement('button');
+        closeBtn.id = 'chat-close-btn';
+        closeBtn.textContent = '×';
+        closeBtn.style.position = 'absolute';
+        closeBtn.style.top = '18px';
+        closeBtn.style.right = '24px';
+        closeBtn.style.background = 'transparent';
+        closeBtn.style.color = '#fff';
+        closeBtn.style.fontSize = '2rem';
+        closeBtn.style.border = 'none';
+        closeBtn.style.cursor = 'pointer';
+        closeBtn.style.zIndex = '10001';
+        closeBtn.onclick = function() {
+          chatRoot.style.display = 'none';
+          chatRoot.classList.remove('active');
+        };
+        chatRoot.appendChild(closeBtn);
+      }
+    }
+    helpIcon.addEventListener('click', addCloseBtn);
+    // Chatbot logic (unchanged)
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('user-input');
+    const messages = document.getElementById('messages');
+    const sendBtn = document.getElementById('send-btn');
+    input.addEventListener('input', () => {
+      sendBtn.disabled = !input.value.trim();
+    });
+    function addMessage(text, sender) {
+      const div = document.createElement('div');
+      div.classList.add('message', sender);
+      div.textContent = text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+    function showTypingIndicator() {
+      if (!document.getElementById('typing-indicator')) {
+        const typingDiv = document.createElement('div');
+        typingDiv.id = 'typing-indicator';
+        typingDiv.classList.add('message', 'bot');
+        const container = document.createElement('div');
+        container.className = 'typing-indicator';
+        for (let i=0; i<3; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'dot';
+          container.appendChild(dot);
+        }
+        typingDiv.appendChild(container);
+        messages.appendChild(typingDiv);
+        messages.scrollTop = messages.scrollHeight;
+      }
+    }
+    function hideTypingIndicator() {
+      const typingDiv = document.getElementById('typing-indicator');
+      if (typingDiv) typingDiv.remove();
+    }
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      input.value = '';
+      sendBtn.disabled = true;
+      showTypingIndicator();
+      try {
+        const response = await fetch('/ask', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({message: text})
+        });
+        hideTypingIndicator();
+        const data = await response.json();
+        addMessage(data.reply, 'bot');
+      } catch {
+        hideTypingIndicator();
+        addMessage('Sorry, I couldn\'t retrieve a response.', 'bot');
+      }
+    });
+  </script>
+</body>
+</html>
