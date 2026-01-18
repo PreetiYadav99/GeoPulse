@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SoilScope Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100vw;
+            background: url('../public/background5.png') center center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .container {
+            background: rgba(255,255,255,0.45);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 2.5rem 2rem 2rem 2rem;
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+            border: 1.5px solid #e3e3e3;
+            animation: loginDropFade 0.8s cubic-bezier(.77,.2,.25,1) both;
+            transition: transform 0.25s cubic-bezier(.77,.2,.25,1), box-shadow 0.2s;
+        }
+
+        .container:hover {
+            transform: rotate(-2deg) scale(1.03) translateY(-4px);
+            box-shadow: 0 12px 36px rgba(24,119,243,0.18);
+        }
+
+        @keyframes loginDropFade {
+            0% {
+                opacity: 0;
+                transform: translateY(-60px) scale(0.98);
+                filter: blur(12px);
+            }
+            60% {
+                opacity: 0.7;
+                transform: translateY(8px) scale(1.02);
+                filter: blur(2px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1877F3;
+            text-align: center;
+            margin: 0 0 1rem 0;
+            letter-spacing: 0.02em;
+            text-shadow: 0 2px 8px #e3e3e3;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            color: #1e293b;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        input {
+            border: 1.5px solid #d1d5db;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 1rem;
+            outline: none;
+            color: #222;
+            background: #f8fafc;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            border-color: #1877F3;
+            box-shadow: 0 0 0 2px rgba(24,119,243,0.1);
+        }
+
+        button {
+            background: #1877F3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            background: #1463cc;
+            transform: translateY(-1px);
+        }
+
+        p {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #4b5563;
+            margin: 1rem 0 0 0;
+        }
+
+        a {
+            color: #1877F3;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #1463cc;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #ef4444;
+            text-align: center;
+            background: #fee2e2;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome Back</h1>
+        <div id="error-message" class="error-message"></div>
+        <form method="post" action="/login">
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email" autocomplete="email" />
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password" autocomplete="current-password" />
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="/register">Register here</a></p>
+    </div>
+
+    <script>
+        // Show error message if there's an error in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        if (error) {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = decodeURIComponent(error);
+            errorMessage.classList.add('show');
+        }
+    </script>
+</body>
+</html>

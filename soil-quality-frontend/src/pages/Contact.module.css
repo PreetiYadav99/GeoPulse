@@ -1,0 +1,112 @@
+.bgWrapper {
+  min-height: 100vh;
+  background: url('/background7.png') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+.container {
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 480px;
+  width: 100%;
+  margin: 2rem 0;
+  position: relative;
+  text-align: center;
+  animation: contactPopIn 0.8s cubic-bezier(.23,1.1,.32,1) 0.1s both;
+}
+
+@keyframes contactPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(40px);
+    filter: blur(2px);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1.04) translateY(-4px);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    max-width: 98vw;
+    border-radius: 16px;
+    margin: 1.2rem 0.2rem;
+  }
+  .title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .container p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+}
+.title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #185a9d;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 16px #fff8;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.input, .textarea {
+  border: 1.5px solid #43cea2;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.7);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input:focus, .textarea:focus {
+  border-color: #185a9d;
+}
+.error {
+  color: #e53e3e;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.submitBtn {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.8rem 0;
+  background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  font-size: 1.7rem;
+  margin-top: 1.2rem;
+}
+.socials a {
+  color: #185a9d;
+  transition: color 0.2s;
+}
+.socials a:hover {
+  color: #43cea2;
+}

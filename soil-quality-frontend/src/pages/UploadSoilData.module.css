@@ -1,0 +1,180 @@
+.bgWrapper {
+  min-height: 100vh;
+  background: url('/background13.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 540px;
+  width: 100%;
+  margin: 2rem 0;
+  position: relative;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 1.2rem 0.3rem;
+    max-width: 100vw;
+  }
+  .title {
+    font-size: 1.2rem;
+    margin-bottom: 0.7rem;
+  }
+  .dropArea {
+    padding: 0.7rem;
+    font-size: 0.98rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+  .inputGroup input {
+    font-size: 0.98rem;
+    padding: 0.4rem 0.5rem;
+  }
+  .submitBtn {
+    font-size: 0.98rem;
+    padding: 0.6rem 0;
+  }
+}
+.title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 16px #0008;
+}
+.dropArea {
+  border: 2.5px dashed #43cea2;
+  border-radius: 16px;
+  background: rgba(67,206,162,0.08);
+  color: #185a9d;
+  font-weight: 600;
+  padding: 1.2rem;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 1.2rem;
+  transition: border-color 0.2s;
+}
+.dropArea:hover {
+  border-color: #185a9d;
+}
+.fileName {
+  color: #185a9d;
+  font-weight: 700;
+}
+.or {
+  text-align: center;
+  color: #fff;
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.form {
+  margin-bottom: 1.2rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem 1.2rem;
+}
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+.inputGroup label {
+  color: #185a9d;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+.inputGroup input {
+  border: 1.5px solid #43cea2;
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.7);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.inputGroup input:focus {
+  border-color: #185a9d;
+}
+.errorInput {
+  border-color: #e53e3e !important;
+}
+.errorMsg {
+  color: #e53e3e;
+  font-size: 0.85rem;
+  margin-top: 2px;
+}
+.submitBtn {
+  margin-top: 1.2rem;
+  width: 100%;
+  padding: 0.8rem 0;
+  background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.livePreview {
+  margin: 1.5rem 0 0.5rem 0;
+  text-align: center;
+}
+.cameraPlaceholder {
+  background: rgba(24,90,157,0.08);
+  border: 1.5px dashed #185a9d;
+  border-radius: 12px;
+  color: #185a9d;
+  font-weight: 700;
+  padding: 1.2rem;
+  font-size: 1.1rem;
+}
+.validationModal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.validationModal > div {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 8px 32px rgba(24,90,157,0.18);
+  text-align: center;
+}
+.validationModal h2 {
+  color: #e53e3e;
+  margin-bottom: 0.5rem;
+}
+.validationModal button {
+  margin-top: 1rem;
+  background: #185a9d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .container { padding: 1.2rem 0.5rem; }
+  .grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,165 @@
+/* Set Home page background image from public folder */
+.home-wrapper {
+  min-height: 100vh;
+}
+/* Row layout for main image and slider */
+.main-image-row {
+  background-image: url('../../public/background13.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+}
+.main-image-img {
+
+.image-slider-section {
+  width: 420px;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 40px;
+}
+}
+
+.slider-placeholder {
+  width: 400px;
+  height: 440px;
+  background: linear-gradient(135deg, #f8fafc 60%, #e0e7ef 100%);
+  border-radius: 28px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18), 0 2px 12px rgba(0,0,0,0.10);
+  border: 4px solid #e3e6ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #185a9d;
+  font-weight: 700;
+  animation: fallIn 3s cubic-bezier(.23,.89,.56,1.01) 0.2s both;
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+.slider-placeholder:hover {
+  box-shadow: 0 20px 60px rgba(0,0,0,0.22), 0 4px 16px rgba(0,0,0,0.14);
+  border-color: #cbd5e1;
+}
+.main-image-img {
+  animation: fallIn 3s cubic-bezier(.23,.89,.56,1.01) 0.2s both;
+}
+@keyframes fallIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-120px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(20px);
+  }
+  80% {
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-section .btn-primary {
+  animation: fallIn 3s cubic-bezier(.23,.89,.56,1.01) 1s both;
+}
+@keyframes fallIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-120px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(20px);
+  }
+  80% {
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-section p {
+  font-size: 2.4rem;
+  margin-bottom: 2.8rem;
+  color: #dce6def9;
+  font-weight: 800;
+  animation: fallIn 3s cubic-bezier(.23,.89,.56,1.01) 1s both;
+}
+
+.btn-primary {
+  margin-top: 30px;
+  padding: 14px 40px;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 6px 24px rgba(67, 206, 162, 0.18);
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 32px rgba(67, 206, 162, 0.28);
+}
+.hero-section h1 {
+  animation: fallIn 3s cubic-bezier(.23,.89,.56,1.01) 1s both;
+  font-size: 4rem;
+  font-weight: 900;
+  margin-bottom: 1.8rem;
+}
+/* Match UploadForm wrapper styling and fix background */
+/* Match UploadForm wrapper styling */
+
+/* Match Upload page image styling */
+/* Match UploadForm section styling */
+/* Extend image background behind footer, like Upload page */
+/* Match UploadForm section styling */
+/* Remove old main-image style, replaced by main-image-row */
+
+
+
+
+
+/* Remove card styling, keep content styling */
+.hero-section {
+  max-width: 900px;
+  width: 100%;
+  background: transparent;
+  padding: 2rem;
+  margin-top: 0;
+  border-radius: 12px;
+  text-align: center;
+  color: #d31010;
+}
+
+
+/* Make footer hover over the image, fixed at bottom */
+/* Make footer scroll with content, not fixed */
+/* Make footer hover over image section, like UploadForm */
+/* Footer further below card/content */
+/* Footer always below card/content, not overlapping */
+/* Restore original Home page footer style */
+.footer-section {
+  width: 100%;
+  background-color: #263445;
+  padding: 40px 0 32px 0;
+  text-align: center;
+  box-shadow: 0 -2px 16px rgba(0,0,0,0.07);
+}
+
+
+

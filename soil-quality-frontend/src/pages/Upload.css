@@ -1,0 +1,75 @@
+/* Upload selection page styles */
+.upload-wrapper {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.upload-cards {
+  display: flex;
+  gap: 28px;
+  max-width: 1100px;
+  width: 100%;
+  justify-content: center;
+}
+
+.card {
+  flex: 1 1 300px;
+  min-height: 160px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid rgba(34,197,94,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(233, 252, 231, 0.92);
+  flex-direction: column;
+  padding: 18px;
+  cursor: pointer;
+  transform: translateY(-120px);
+  opacity: 0;
+  box-shadow: 0 12px 36px rgba(3,7,18,0.62);
+  transition: transform 380ms cubic-bezier(.2,.9,.2,1), opacity 420ms ease, box-shadow 380ms ease, filter 380ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.04);
+  /* stronger soil-scope green shadow on hover */
+  box-shadow: 0 30px 90px rgba(11,102,35,0.26);
+  filter: saturate(1.08) brightness(1.01);
+}
+
+.card.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* paragraph / second-line style */
+.card p { color: rgba(233,252,231,0.92); font-size: 16px; margin: 6px 0 0; line-height: 1.28; font-weight: 600; }
+/* subtle glow behind card on hover */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(closest-side, rgba(34,197,94,0.08), transparent 40%);
+  opacity: 0;
+  transition: opacity 420ms ease, transform 420ms ease;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+.card:hover::before { opacity: 1; transform: scale(1); }
+
+/* soil-scope heading color & weight */
+.card h3 { margin: 8px 0 6px 0; font-size: 1.4rem; color: #0b6623; font-weight: 700; }
+
+
+/* icon background */
+.card svg { background: radial-gradient(circle at 30% 30%, #2f8a48, #0b6623 70%); padding: 10px; border-radius: 50%; box-shadow: 0 8px 26px rgba(11,102,35,0.16); }
+
+@media (max-width: 900px) {
+  .upload-cards { flex-direction: column; gap: 18px; }
+}

@@ -1,0 +1,129 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box; /* Ye hona important hai */
+  background-color: rgba(44, 62, 80, 0.8);
+  padding: 0.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  overflow-x: auto; /* Horizontal overflow hone par scroll lane ke liye */
+  scrollbar-width: none; /* Firefox scrollbar hide karne ke liye */
+}
+
+.navbar::-webkit-scrollbar {
+  display: none; /* Chrome scrollbar hide karne ke liye */
+}
+
+
+.logo {
+  color: #1abc9c;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: 12px;
+}
+
+.menu-toggle .bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #ecf0f1;
+  margin: 4px 0;
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+
+.menu-toggle.open .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.menu-toggle.open .bar:nth-child(2) { opacity: 0; }
+.menu-toggle.open .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.8rem;
+  margin: 0;
+  padding: 0;
+  flex-wrap: nowrap;  /* nowrap ya wrap jaisa chahiye */
+  overflow-x: auto;   /* Overflow hone par scroll karwaega */
+  scrollbar-width: none;
+}
+
+/* Mobile: hide the inline menu and use toggle */
+@media (max-width: 760px) {
+  .menu-toggle { display: block; }
+  nav ul { 
+    position: fixed;
+    top: 64px; /* below navbar */
+    right: 12px;
+    background: rgba(10,20,30,0.95);
+    flex-direction: column;
+    gap: 0;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+    transform-origin: top right;
+    transform: scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 220ms ease, opacity 220ms ease;
+  }
+
+  nav ul.open {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  nav ul li { margin: 6px 0; }
+  nav ul li a { font-size: 1rem; }
+}
+
+nav ul::-webkit-scrollbar {
+  display: none;
+}
+
+
+nav ul li a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.07rem;
+  transition: color 0.3s ease, border-bottom-color 0.3s ease;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #1abc9c;
+  border-bottom-color: #1abc9c;
+}
+
+.nav-button {
+  background: transparent;
+  border: 2px solid #1abc9c;
+  color: #1abc9c;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+  background: #1abc9c;
+  color: #fff;
+}

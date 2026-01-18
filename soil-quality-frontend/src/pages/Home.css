@@ -1,0 +1,320 @@
+
+.home-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* background image moved to inline style in Home.js to avoid css-loader resolution errors */
+  /* match footer color to hide any gap */
+  background-color: #263445;
+  background-blend-mode: normal;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 0; /* no extra page padding */
+}
+
+/* push content below the fixed navbar (navbar height ~= 64-80px) */
+.hero-grid {
+  padding-top: 80px; /* provides spacing from top so navbar doesn't overlap */
+}
+  
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+  }
+  
+  /* .home-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: url('/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #ecf0f1;
+  } */
+  
+  .content-wrapper {
+    flex: 1;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;      
+    justify-content: flex-start; 
+  }
+  
+  /* Hero grid */
+  .hero-grid {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    align-items: center; /* vertical centering */
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    backdrop-filter: none;
+    min-height: calc(100vh - 120px); /* ensure hero fills viewport below navbar */
+    flex: 1 1 auto; /* allow hero area to take remaining space so footer sits at bottom */
+  }
+
+  /* center column layout so hero-actions (button) sits centered */
+  .center-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* center horizontally */
+    justify-content: center;
+    text-align: center;
+    z-index: 30; /* keep center content above background images */
+    padding-top: 40px; /* move hero content slightly down */
+  }
+
+  /* new hero background wrapper: separate from footer */
+  .hero-bg {
+    width: 100%;
+    display: block;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  /* hero occupies most of viewport; keep background clear so hero image is visible */
+  min-height: calc(100vh - 80px + 80px);
+  box-shadow: none;
+  }
+  
+  .hero-title {
+    font-size: 3.6rem;
+    margin: 0 0 0.6rem 0;
+    color: #b60a0acc;
+    text-shadow: 0 8px 26px rgba(0,0,0,0.6);
+    opacity: 0;
+    font-weight: 700;
+    transform: translateY(20px);
+    animation: fadeUp 2000ms cubic-bezier(.2,.8,.2,1) forwards 500ms;
+    text-align: center;
+  }
+
+  .hero-sub {
+    font-size: 1.5rem;
+    margin: 0 auto;
+    color: rgba(243, 233, 234, 0.95);
+    max-width: 840px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 2000ms cubic-bezier(.2,.8,.2,1) forwards 500ms;
+    text-align: center;
+  }
+  
+  .btn-primary {
+    background-color: #1abc9c;
+    color: #2c3e50;
+    padding: 0.9rem 3rem;
+    font-weight: 700;
+    font-size: 1.18rem;
+    border-radius: 30px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .btn-primary:hover {
+    background-color: #16a085;
+  }
+
+  /* Get Started animated button */
+  .hero-actions { margin-top: 1.4rem; }
+  .btn-getstarted {
+    display: inline-block;
+    background: linear-gradient(90deg,#4fcc9f,#2fbfdf);
+    color: #04212a;
+    padding: 0.85rem 1.6rem;
+    border-radius: 28px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-decoration: none;
+    box-shadow: 0 12px 30px rgba(47,191,223,0.18);
+    transform: translateY(0);
+    transition: transform 320ms cubic-bezier(.2,.9,.2,1), box-shadow 320ms ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-getstarted::after {
+    content: '';
+    position: absolute;
+    left: -40%; top: 0;
+    width: 40%; height: 100%;
+    background: rgba(255,255,255,0.18);
+    transform: skewX(-25deg) translateX(-100%);
+    transition: transform 700ms ease;
+  }
+
+  .btn-getstarted:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(47,191,223,0.2);
+  }
+
+  .btn-getstarted:hover::after { transform: skewX(-25deg) translateX(220%); }
+
+  /* bottom info section - move right content to left visually on small screens */
+  .bottom-info {
+    display: flex;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 2.4rem auto;
+    padding: 1.6rem;
+    align-items: flex-start;
+  }
+
+  .bottom-left, .bottom-right {
+    flex: 1 1 50%;
+    background: rgba(255,255,255,0.03);
+    padding: 1.2rem 1.6rem;
+    border-radius: 10px;
+  }
+
+  /* swap order on wide screens by placing bottom-right content left visually */
+  .bottom-info .bottom-left { order: 1; }
+  .bottom-info .bottom-right { order: 2; }
+
+  @media (max-width: 900px) {
+    .bottom-info { flex-direction: column; }
+    .bottom-info .bottom-left, .bottom-info .bottom-right { order: initial; }
+  }
+
+  /* marquee overlay on hero bottom */
+  .marquee-wrap {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 40px;
+    z-index: 50;
+    overflow: hidden;
+    pointer-events: none; /* not interactive */
+  }
+
+  .marquee {
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    /* single-item fade handled in TextRotator */
+    padding: 0 8px;
+  }
+
+  /* inline marquee placed below the centered button */
+  .marquee-inline { margin-top: 1.2rem; pointer-events: none; width: 100%; display:flex; justify-content:center; }
+
+  .marquee-item {
+    color: #0dd020;
+    background: transparent; /* show as plain inline text */
+    padding: 0 12px; /* minimal spacing between items */
+    border-radius: 0;
+    font-weight: 700;
+    white-space: nowrap; /* keep single line */
+    font-size: 1.5rem; /* readable but inline */
+    letter-spacing: 0.2px;
+    opacity: 0;
+    animation: fadeInOut 3.5s ease-in-out infinite;
+  }
+
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-6px); }
+    10% { opacity: 1; transform: translateY(0); }
+    85% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(6px); }
+  }
+
+  /* ensure left column (image) is visible and centered */
+  .left-column { display:flex; align-items:center; justify-content:center; z-index:20; }
+  .image-box { display:block; }
+
+  @media (max-width: 900px) {
+    .marquee-item { font-size: 1rem; }
+    .marquee { gap: 20px; }
+  }
+
+  @media (max-width: 600px) {
+    .marquee-item { font-size: 0.95rem; padding: 12px 16px; }
+    .left-column { display:none; } /* hide left image on very small screens to save space */
+  }
+
+  @keyframes marqueeAnim {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-40%); }
+  }
+
+  @media (max-width: 900px) {
+    .marquee-wrap { bottom: 20px; }
+    .marquee { animation-duration: 28s; }
+  }
+  
+  .footer-section {
+    width: 100%;
+    background-color: rgba(38, 52, 69, 0.9);
+    padding: 30px 20px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+    text-align: center;
+  }
+
+  /* existing project navbar is used; removed duplicate nav-right styles */
+
+  /* the small image box on left */
+  .image-box {
+    width: 260px;
+    height: 260px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 5px solid rgba(255,255,255,0.95);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.55);
+    background: #000;
+    transform-origin: center;
+    /* Show image immediately and disable entry animation to avoid invisible state */
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @keyframes dropIn {
+    to { opacity: 1; transform: translateY(0) rotate(0); }
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* responsive */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 160px 1fr; gap: 1.2rem; padding: 1.2rem; }
+    .image-box { width: 180px; height: 180px; }
+    .hero-title { font-size: 2.4rem; }
+  }
+
+  @media (max-width: 600px) {
+    .hero-grid { grid-template-columns: 1fr; text-align: center; }
+    .left-column { order: -1; display:flex; justify-content:center; }
+    .image-box { margin: 0 auto; }
+    /* navbar is handled by src/components/Navbar.css */
+  }
+
+/* Fix footer to bottom and avoid overlay on content */
+/* footer wrapper that contains the Footer component. Keep it simple so footer is part of flow */
+.footer-section {
+  flex-shrink: 0;
+  width: 100%;
+  /* keep footer clearly below the hero background but close gap */
+  margin-top: 0.6rem;
+}
+
+@media (max-width: 900px) {
+  .hero-bg { min-height: calc(100vh - 80px + 100px); }
+}
+
+@media (max-width: 600px) {
+  .hero-bg { min-height: calc(100vh - 80px + 60px); }
+  .footer-section { margin-top: 1rem; }
+}
+  
